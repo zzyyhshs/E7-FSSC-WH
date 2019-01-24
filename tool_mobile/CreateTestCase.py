@@ -80,7 +80,7 @@ class test_{1}(mytest.MyMobileTest):
                 self.billDataDict["fillPerson"] = bill_data[4]
                 self.billDataDict["approvalModel"] = bill_data[5]
                 # 创建
-                CaseTestClass.createTestCase(self.setTemplateStr(), self.setFilePath())
+                self.createTestCase(self.setTemplateStr(), self.setFilePath())
 
     def setFilePath(self):
         billBroupDir = os.path.join(os.path.abspath('..'), 'testcase', self.billDataDict["billGroup"].lower())
@@ -88,7 +88,7 @@ class test_{1}(mytest.MyMobileTest):
         billFilePath = os.path.join(billBroupDir, "test_" + self.billDataDict["billCode"] + ".py")
         if os.path.exists(billBroupDir) is False:
             os.makedirs(billBroupDir)
-        CaseTestClass.createTestCase("", os.path.join(billBroupDir, "__init__.py"))
+        self.createTestCase("", os.path.join(billBroupDir, "__init__.py"))
         return billFilePath
 
     @classmethod
