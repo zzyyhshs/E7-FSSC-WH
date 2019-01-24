@@ -4,4 +4,5 @@
 *.html
 *.log
 .idea
+*.ini
 testcase/*
