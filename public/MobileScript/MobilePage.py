@@ -193,9 +193,8 @@ class MobilePage(Page):
             if data["itemName"] in ["申请单号", "合同编号", "发票号码", "单据编号"]:
                 self.otherInput(data["css"], data["itemName"], data["inputValue"])
             elif data["itemName"] == "对方账户":
-                a = "xpath->//input[@itemvarname='InceptAccount' and @itemid='1000000000001898']"
-                re.sub(r"", "div", a)
-                self.selectInput(data["css"], data["itemName"], data["inputValue"])
+                css = data["css"].replace("input", "div").replace("InceptAccount", "InceptAccount_label")
+                self.selectInput(css, data["itemName"], data["inputValue"])
             else:
                 self.typeInput(data["css"], data["itemName"], data["inputValue"])
 
