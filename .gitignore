@@ -1,6 +1,8 @@
 *.pyc
 *.xls
-
-
+*.html
+*.png
+*.jpg
 *.log
 .idea
+testcase/*
