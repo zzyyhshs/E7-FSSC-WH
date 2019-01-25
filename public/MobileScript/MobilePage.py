@@ -133,6 +133,7 @@ class MobilePage(Page):
             return False
 
     def saveBill(self):
+        sleep(1)
         self.click(mobileConfig.save_Btn_xpath)
         sleep(1)
         self.assertEqual("单据保存成功", "保存失败", mobileConfig.pop_up_text)
@@ -278,9 +279,10 @@ class MobilePage(Page):
                 sleep(0.5)
             self.click(mobileConfig.select_sure4)
         else:
-            self.clearType(mobileConfig.search_input_xpath, value)
+            self.click(mobileConfig.search_input_xpath)
+            self.clearType(mobileConfig.search_input_xpath2, value)
             sleep(2)
-            self.click(mobileConfig.search_submit_xpath2)
+            self.click(mobileConfig.search_submit_xpath3)
             try:
                 xpath = "xpath->//div[@class='scroll']/ul/li[@class='children-li'][2]"
                 self.click(xpath)

@@ -18,10 +18,10 @@ class test_WBZ_SXSQD1(mytest.MyMobileTest):
         # 初始化测试对象
         fsscTest = MobilePage(self.dr)
         # 准备测试数据
-        billName = "1.1-zq日常费用申请单"
+        billName = "1.3-zq费用报销单（有申请）"
         fillPerson = "测试一号"
         approvalModel = "Auto"
-        testCaseFile = "zq费用报销组\\1.1-zq日常费用申请单.xls"
+        testCaseFile = "zq费用报销组\\1.3-zq费用报销单（有申请）.xls"
         testCaseData = BillTestData(testCaseFile, 1)
         # 打开系统
         fsscTest.openSystem_Mob(globalparam.mobile_sys_address)
