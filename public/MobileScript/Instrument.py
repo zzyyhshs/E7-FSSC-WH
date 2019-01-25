@@ -17,7 +17,7 @@ success = "SUCCESS   "
 fail = "FAIL   "
 HTML_IMG_TEMPLATE = """
     <a href="data:image/png;base64, {}">
-    <img src="data:image/png;base64, {}" width="800px" height="500px"/>
+    <img src="data:image/png;base64, {}" width="1000px" height="500px"/>
     </a>
     <br></br>
 """
