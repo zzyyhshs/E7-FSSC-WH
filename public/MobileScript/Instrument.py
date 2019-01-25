@@ -10,6 +10,7 @@ from autoTestFrame.pyselenium import PySelenium
 from config import globalparam
 from public.pages.SubmitToBillPageConfig import SubmitToBillPageConfig
 from PIL import Image
+from functools import wraps
 
 
 success = "SUCCESS   "
@@ -81,16 +82,6 @@ class MobileSelenium(PySelenium):
         :return: 图片路径
         """
         path = globalparam.mobile_img_path + '\\' + file_name
-        # url = self.driver.current_url
-        # dr = webdriver.PhantomJS(executable_path=r"D:\phantomjs-2.1.1-windows\bin\phantomjs.exe")
-        # dr.maximize_window()
-        # dr.get(url)
-        # sleep(3)
-        # dr.save_screenshot(path)
-
-        # html = self.driver.find_element_by_xpath("//*").get_attribute("outerHTML")
-        # with open(path, "w", encoding="utf-8") as f:
-        #     f.write(html)
         self.driver.save_screenshot(path)
         return path
 
@@ -133,6 +124,7 @@ def openSystem(func):  # 打开url
 
 
 def switchIframe_main(func):  # 切换iframe -> main
+    @wraps(func)
     def fool(self, *args, **kwargs):
         self.driver.switch_to_iframe(SubmitToBillPageConfig.mainIframe)
         sleep(1)
@@ -143,6 +135,7 @@ def switchIframe_main(func):  # 切换iframe -> main
 
 
 def switchIframe_formTree(func):  # 切换iframe -> formTree
+    @wraps(func)
     def fool(self, *args, **kwargs):
         self.driver.switch_to_iframe(SubmitToBillPageConfig.formTreeIframe)
         # sleep(3)
@@ -153,6 +146,7 @@ def switchIframe_formTree(func):  # 切换iframe -> formTree
 
 
 def switchIframe_formContent(func):  # 切换iframe -> formContent
+    @wraps(func)
     def fool(self, *args, **kwargs):
         self.driver.switch_to_iframe(SubmitToBillPageConfig.formContentIframe)
         # sleep(3)
@@ -163,6 +157,7 @@ def switchIframe_formContent(func):  # 切换iframe -> formContent
 
 
 def switchIframe_jd(func):  # 切换iframe -> jd
+    @wraps(func)
     def fool(self, *args, **kwargs):
         self.driver.switch_to_iframe(SubmitToBillPageConfig.jdIframe)
         # sleep(3)
@@ -173,6 +168,7 @@ def switchIframe_jd(func):  # 切换iframe -> jd
 
 
 def switchIframe_tasks(func):  # 切换iframe -> tasks
+    @wraps(func)
     def fool(self, *args, **kwargs):
         self.driver.switch_to_iframe(SubmitToBillPageConfig.tasksIframe)
         # sleep(3)
@@ -183,6 +179,7 @@ def switchIframe_tasks(func):  # 切换iframe -> tasks
 
 
 def switchIframe_center(func):  # 切换iframe -> center
+    @wraps(func)
     def fool(self, *args, **kwargs):
         self.driver.switch_to_iframe(SubmitToBillPageConfig.centerFrame)
         # sleep(3)
@@ -193,6 +190,7 @@ def switchIframe_center(func):  # 切换iframe -> center
 
 
 def switchIframe_No(func):  # 切换iframe -> No
+    @wraps(func)
     def fool(self, *args, **kwargs):
         self.driver.switch_to_iframe(SubmitToBillPageConfig.iframeNo)
         # sleep(3)
@@ -203,6 +201,7 @@ def switchIframe_No(func):  # 切换iframe -> No
 
 
 def switchIframe_No1(func):  # 切换iframe -> No1
+    @wraps(func)
     def fool(self, *args, **kwargs):
         self.driver.switch_to_iframe(SubmitToBillPageConfig.iframeNo1)
         # sleep(3)
