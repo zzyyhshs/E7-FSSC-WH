@@ -109,11 +109,10 @@ class MobileSelenium(PySelenium):
         self.my_print(HTML_IMG_TEMPLATE.format(data, data))
 
 
-url = "http://192.168.64.11:9000/e7-fssc/pages/login.jsp"
 """移动端获取数据装饰器"""
 def openSystem(func):  # 打开url
     def run(self, bills_name):
-        self.driver.openSystem(url)
+        self.driver.openSystem(globalparam.system_address)
         self.driver.dr.max_window()
         self.driver.loginSystem("admin", "1")
         sleep(3)

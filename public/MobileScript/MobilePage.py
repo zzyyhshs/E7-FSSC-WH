@@ -135,7 +135,7 @@ class MobilePage(Page):
     def saveBill(self):
         sleep(1)
         self.click(mobileConfig.save_Btn_xpath)
-        sleep(1)
+        sleep(3)
         self.assertEqual("单据保存成功", "保存失败", mobileConfig.pop_up_text)
 
     def assertEqual(self, assert1, msg, xpath):
