@@ -114,7 +114,7 @@ class MobilePage(Page):
                 if verify_data["itemType"] == "currency":
                     self.judgeValue(float(actual_value), float(verify_data["verifyValue"]), verify_data["itemName"])
                 else:
-                    self.judgeValue(str(actual_value), str(verify_data["verifyValue"]), verify_data["itemName"])
+                    self.judgeValue(str(actual_value).strip(), str(verify_data["verifyValue"]), verify_data["itemName"])
         self.setScreenshot()  # 截图
         self.last_group_xpath = ""  # 初始化数据
         self.img_path = ""
@@ -267,7 +267,10 @@ class MobilePage(Page):
         self.dr.element_wait(mobileConfig.search_input_xpath, 10)
         sleep(1)
         if column_name == "受益人":
-            beneficiary_list = re.findall(r"(.*?);", value)
+            if ";" in value:
+                beneficiary_list = re.findall(r"(.*?);", value)
+            else:
+                beneficiary_list = [value]
             self.click("xpath->//div[@class='body-center-right']")
             sleep(1)
             for beneficiary in beneficiary_list:

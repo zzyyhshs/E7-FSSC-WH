@@ -61,7 +61,7 @@ class BillTestData(object):
         elif nrows[2] != "currency" and type(nrows[9]) == float:
             verify_value = int(nrows[9])
         else:
-            verify_value = str(nrows[9])
+            verify_value = str(nrows[9]).strip()
         return verify_value
 
     @property
