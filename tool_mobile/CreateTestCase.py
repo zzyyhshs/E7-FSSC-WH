@@ -40,10 +40,10 @@ class test_{1}(mytest.MyMobileTest):
         fsscTest.saveBill()
         verifyResult = fsscTest.verifyBillValue(testCaseData.billInputData)
         self.assertFalse(verifyResult, fsscTest.wrong_data)
-        nextApprove = fsscTest.submissionBill()
+        nextApprove = fsscTest.submissionBill(billName)
         fsscTest.logoutSystem_Mob(1)
         if approvalModel == "Auto":
-            fsscTest.handleBillAuto(nextApprove, testCaseData.billInputData)
+            fsscTest.handleBillAuto(nextApprove, testCaseData.billInputData, billName)
 """
 
     def __init__(self, data_file):

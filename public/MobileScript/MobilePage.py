@@ -19,8 +19,9 @@ class MobilePage(Page):
         self.last_group_xpath = ""
         self.bill_num = ""
         self.img_path = ""
+        self.bill_name = ""
 
-    def handleBillAuto(self, next_approve, billTestData):
+    def handleBillAuto(self, next_approve, billTestData, bill_name):
         if next_approve:
             self.login_Mob(next_approve)
             sleep(3)
@@ -28,9 +29,9 @@ class MobilePage(Page):
             sleep(3)
             verifyResult = self.verifyBillValue(billTestData)
             assert verifyResult == 0, self.wrong_data
-            next_approve = self.submissionBill()
+            next_approve = self.submissionBill(bill_name)
             self.logoutSystem_Mob()
-            self.handleBillAuto(next_approve, billTestData)
+            self.handleBillAuto(next_approve, billTestData, bill_name)
 
     def filterVerifyData(self, test_data):
         # 1 判断test_data是哪个分组
@@ -68,13 +69,16 @@ class MobilePage(Page):
         sleep(3)
         return next_one_approver
 
-    def submissionBill(self):
-        self.dr.driver.refresh()  # 刷新页面
-        sleep(1)
+    def submissionBill(self, bill_name):
+        # self.dr.driver.refresh()  # 刷新页面
         if traceback.extract_stack()[-2][2] == "handleBillAuto":
+            title_xpath = "xpath->//p[text()='{}']".format(bill_name)
             mission_xpath = mobileConfig.verify_pass
         else:
+            title_xpath = "xpath->//h1[text()='{}']".format(bill_name)
             mission_xpath = mobileConfig.mission_bill_xpath
+        self.dr.browserRoll(title_xpath)
+        sleep(1)
         self.click(mission_xpath)
         sleep(3)
         approver = self.getNextOneApprover()
