@@ -48,10 +48,11 @@ class MobileSelenium(PySelenium):
                                                                                                   time.time() - t1))
             raise
 
-    def browserRoll(self, element, css):
+    def browserRoll(self, css):
         """控制页面滚动到指定元素"""
         t1 = time.time()
         roll_js = "arguments[0].scrollIntoView();"
+        element = self.get_element(css)
         try:
             self.driver.execute_script(roll_js, element)
             self.my_print(
@@ -67,13 +68,12 @@ class MobileSelenium(PySelenium):
     def click_Mob(self, xpath):
         """点击不到元素,滚动之后再点击一次"""
         self.my_print("点击元素[{0}]".format(xpath))
-        ele = self.get_element(xpath)
         sleep(0.5)
         try:
-            ele.click()
+            self.click(xpath)
         except:
-            self.browserRoll(ele, xpath)
-            ele.click()
+            self.browserRoll(xpath)
+            self.click(xpath)
 
     def get_img(self, file_name):
         """

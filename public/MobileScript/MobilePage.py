@@ -44,8 +44,10 @@ class MobilePage(Page):
         else:
             elements = self.getElements(mobileConfig.row_path)
         for element in elements:
-            if test_data["itemName"] in element.text:
-                return element.text.split("\n")[1]
+            filed_list = element.text.split("\n")
+            filed_name = test_data["itemName"] if test_data["itemName"] != "申请人" else "姓名"
+            if filed_name in filed_list:
+                return filed_list[1]
 
     def logoutSystem_Mob(self, token=None):
         if token:
@@ -67,6 +69,8 @@ class MobilePage(Page):
         return next_one_approver
 
     def submissionBill(self):
+        self.dr.driver.refresh()  # 刷新页面
+        sleep(1)
         if traceback.extract_stack()[-2][2] == "handleBillAuto":
             mission_xpath = mobileConfig.verify_pass
         else:
@@ -77,7 +81,15 @@ class MobilePage(Page):
         self.click(mobileConfig.make_sure_xpath)
         sleep(3)
         self.assertEqual("提交成功", "提交失败", mobileConfig.pop_up_text)
+        # 再次尝试获取同意按钮
+        try:
+            self.click(mobileConfig.make_sure_xpath)
+        except OwnError.AlertError as ret:
+            raise ret
+        except Exception:
+            pass
         return approver
+
 
     def searchBill(self, bill_num):
         if traceback.extract_stack()[-3][2] == "handleBillAuto":
@@ -158,7 +170,7 @@ class MobilePage(Page):
                 self.inputValue(data)
         self.setScreenshot()
         self.img_path = ""
-        self.dr.click("xpath->//h1[text()='{}']".format(bill_name))
+        self.click("xpath->//h1[text()='{}']".format(bill_name))
 
     def judgeBrowserRoll(self, group_name, token=None):
         if group_name == "主表区":
@@ -169,11 +181,11 @@ class MobilePage(Page):
             xpath = mobileConfig.Area_dict[group_name]
         if self.last_group_xpath != xpath:
             self.setScreenshot()
-            group_element = self.getElement(xpath)
-            self.dr.browserRoll(group_element, xpath)
+            # group_element = self.getElement(xpath)
+            self.dr.browserRoll(xpath)
             if group_name != "明细区":
-                group_element.click()
-                self.dr.browserRoll(group_element, xpath)
+                self.click(xpath)
+                self.dr.browserRoll(xpath)
             self.last_group_xpath = xpath
 
     def setScreenshot(self):
@@ -308,7 +320,7 @@ class MobilePage(Page):
 
     def intoFillBillPage(self, bill):
         self.infoPrint("进入申请页面")
-        self.dr.click(mobileConfig.apply_for_xpath)
+        self.click(mobileConfig.apply_for_xpath)
         sleep(2)
         try:
             self.dr.click_Mob("xpath->//div[text()='{}']".format(bill))
@@ -343,9 +355,9 @@ class MobilePage(Page):
             raise OwnError.ButtonError(userName, erro_ele.text)
 
     def click(self, css):
-        super().click(css)
+        self.dr.click_Mob(css)
         try:
-            sleep(1)
+            sleep(2)
             text = self.dr.get_element(mobileConfig.pop_up_text).text
         except:
             text = None
