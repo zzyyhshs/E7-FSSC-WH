@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+__author__ = '朱尧'
 import time
 from public.common import datainfo
 import os

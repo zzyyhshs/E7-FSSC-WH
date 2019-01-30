@@ -273,6 +273,17 @@ class MobilePage(Page):
         else:
             raise OwnError.DateError(column_name)
 
+    def selectSearchValue(self, column_name, value):
+        self.click(mobileConfig.search_input_xpath)
+        self.clearType(mobileConfig.search_input_xpath2, value)
+        sleep(2)
+        self.click(mobileConfig.search_submit_xpath3)
+        try:
+            xpath = "xpath->//div[@class='scroll']/ul/li[@class='children-li'][2]"
+            self.click(xpath)
+        except Exception:
+            raise OwnError.SelectError(column_name, value=value)
+
     def selectInput(self, css, column_name, value):
         self.infoPrint("输入[{0}],值：{1}".format(column_name, value))
         try:
@@ -287,26 +298,13 @@ class MobilePage(Page):
                 beneficiary_list = re.findall(r"(.*?);", value)
             else:
                 beneficiary_list = [value]
-            self.click("xpath->//div[@class='body-center-right']")
             sleep(1)
             for beneficiary in beneficiary_list:
-                xpath = "xpath->//span[contains(text(), '{}')]/parent::li[@class='children-li']".format(beneficiary)
-                try:
-                    self.dr.click_Mob(xpath)
-                except Exception:
-                    raise OwnError.SelectError(column_name, value=beneficiary)
+                self.selectSearchValue(column_name, beneficiary)
                 sleep(0.5)
             self.click(mobileConfig.select_sure4)
         else:
-            self.click(mobileConfig.search_input_xpath)
-            self.clearType(mobileConfig.search_input_xpath2, value)
-            sleep(2)
-            self.click(mobileConfig.search_submit_xpath3)
-            try:
-                xpath = "xpath->//div[@class='scroll']/ul/li[@class='children-li'][2]"
-                self.click(xpath)
-            except Exception:
-                raise OwnError.SelectError(column_name, value=value)
+            self.selectSearchValue(column_name, value)
 
     def getBillNum(self):
         """获取单据编号"""
