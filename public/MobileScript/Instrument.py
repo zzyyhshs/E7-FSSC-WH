@@ -72,8 +72,11 @@ class MobileSelenium(PySelenium):
         try:
             self.click(xpath)
         except:
-            self.browserRoll(xpath)
-            self.click(xpath)
+            try:
+                self.get_element("xpath->//div[@class='popup']")
+            except:
+                self.browserRoll(xpath)
+                self.click(xpath)
 
     def get_img(self, file_name):
         """

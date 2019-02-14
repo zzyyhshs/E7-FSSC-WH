@@ -94,7 +94,6 @@ class MobilePage(Page):
             pass
         return approver
 
-
     def searchBill(self, bill_num):
         if traceback.extract_stack()[-3][2] == "handleBillAuto":
             search_xpath = mobileConfig.searchNameDSP
@@ -353,7 +352,7 @@ class MobilePage(Page):
         except:
             erro_ele = None
             self.infoPrint("使用用户[{0}]登陆成功".format(userName))
-        if erro_ele:
+        else:
             raise OwnError.ButtonError(userName, erro_ele.text)
 
     def click(self, css):
@@ -362,13 +361,11 @@ class MobilePage(Page):
             sleep(2)
             text = self.dr.get_element(mobileConfig.pop_up_text).text
         except:
-            text = None
-        if text:
+            pass
+        else:
             if "成功" in text or text.count("-") == 3:
                 return
             raise OwnError.AlertError(text)
-        else:
-            pass
 
     def openSystem_Mob(self, system_address):  # 打开系统
         """打开TSP系统首页"""
@@ -408,4 +405,3 @@ class MobilePage(Page):
         fromIndex = "home.pathGo('form/mobileApprovalConfig.jsf?" + str(time.time()) + "',this)"
         self.dr.js(fromIndex)
         time.sleep(3)
-

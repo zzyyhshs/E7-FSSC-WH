@@ -19,19 +19,19 @@ from public.pages.billTestData import BillTestData
 
 
 class test_{1}(mytest.MyMobileTest):
-    \"\"\"测试单据-{2}-{3}\"\"\"
-
+    \"\"\"测试单据-{2}-{3}\"\"\""""
+    TESTCASETEMPLATE2 = """
     @unittest.skipUnless(globalparam.usecase_run_mode >= 1, "")
-    def test_WBZ_SXSQD1_01(self):
-        \"\"\"测试单据-{2}-{3}-{5}\"\"\"
+    def test_{0}_{5}(self):
+        \"\"\"测试单据-{1}-{2}-{4}\"\"\"
         # 初始化测试对象
         fsscTest = MobilePage(self.dr)
         # 准备测试数据
-        billName = "{3}"
-        fillPerson = "{4}"
-        approvalModel = "{5}"
-        testCaseFile = "{2}\\\\{3}.xls"
-        testCaseData = BillTestData(testCaseFile, 1)
+        billName = "{2}"
+        fillPerson = "{3}"
+        approvalModel = "{4}"
+        testCaseFile = "{1}\\\\{2}.xls"
+        testCaseData = BillTestData.instance(testCaseFile, 1)
         # 打开系统
         fsscTest.openSystem_Mob(globalparam.mobile_sys_address)
         fsscTest.login_Mob(fillPerson)
@@ -49,23 +49,33 @@ class test_{1}(mytest.MyMobileTest):
 
     def __init__(self, data_file):
         self.billList = mobileDataInfo.getAllDataList(data_file, "bill")
-        self.billDataDict = {
-            "timeStr": "",
-            "billGroup": "",
-            "billName": "",
-            "billCode": "",
-            "fillPerson": "",
-            "approvalModel": "",
-        }
+        self.billDataDict = {}
+
+    def getUNm(self):
+        inputValues = mobileDataInfo.getColumnToList("{}/{}.xls".format(self.billDataDict["billGroup"],
+                                                                        self.billDataDict["billName"]),
+                                                     "billData",
+                                                     "inputValue")
+        for value in inputValues:
+            if isinstance(value, str) and "&" in value:
+                return value.split("&").__len__()
+        return 1
 
     def setTemplateStr(self):
-        templateStr = CaseTestClass.TESTCASETEMPLATE.format(self.billDataDict["timeStr"],
-                                                            self.billDataDict["billCode"],
-                                                            self.billDataDict["billGroup"],
-                                                            self.billDataDict["billName"],
-                                                            self.billDataDict["fillPerson"],
-                                                            self.billDataDict["approvalModel"])
-        return templateStr
+        unm = self.getUNm()
+        templatestr = self.TESTCASETEMPLATE.format(self.billDataDict["timeStr"],
+                                                   self.billDataDict["billCode"],
+                                                   self.billDataDict["billGroup"],
+                                                   self.billDataDict["billName"])
+        for i in range(unm):
+            templatestr += self.TESTCASETEMPLATE2.format(self.billDataDict["billCode"],
+                                                         self.billDataDict["billGroup"],
+                                                         self.billDataDict["billName"],
+                                                         self.billDataDict["fillPerson"],
+                                                         self.billDataDict["approvalModel"],
+                                                         i + 1)
+
+        return templatestr
 
     def run(self):
         # 将billList的数据提取出来
@@ -94,14 +104,14 @@ class test_{1}(mytest.MyMobileTest):
 
     @classmethod
     def createTestCase(cls, templateStr, filePath):
-        if os.path.exists(filePath):
-            if templateStr != "":
-                print("测试用例已存在: %s" % filePath)
-        else:
-            with open(filePath, "w", encoding="utf-8") as f:
-                f.write(templateStr.strip())
-            if templateStr != "":
-                print("测试用例已创建: %s" % filePath)
+        # if os.path.exists(filePath):
+        #     if templateStr != "":
+        #         print("测试用例已存在: %s" % filePath)
+        # else:
+        with open(filePath, "w", encoding="utf-8") as f:
+            f.write(templateStr.strip())
+        if templateStr != "":
+            print("测试用例已创建: %s" % filePath)
 
 
 if __name__ == '__main__':

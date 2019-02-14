@@ -22,7 +22,7 @@ class test_WBZ_SXSQD1(mytest.MyMobileTest):
         fillPerson = "测试一号"
         approvalModel = "Auto"
         testCaseFile = "zq费用报销组\\1.1-zq日常费用申请单.xls"
-        testCaseData = BillTestData(testCaseFile, 1)
+        testCaseData = BillTestData.instance(testCaseFile, 1)
         # 打开系统
         fsscTest.openSystem_Mob(globalparam.mobile_sys_address)
         fsscTest.login_Mob(fillPerson)

@@ -107,7 +107,7 @@ def getColumnToList(fileName, sheetName, keyColumn):  # 返回某列的所有数
             break
     if columnNumber is -1:
         raise NameError("获取数据错误，指定的列名不正确")
-    result = [table.row_values(i)[columnNumber].strip() for i in range(1, table.nrows)]
+    result = table.col_values(i)
     return result
 
 
