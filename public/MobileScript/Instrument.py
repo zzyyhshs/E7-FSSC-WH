@@ -70,13 +70,19 @@ class MobileSelenium(PySelenium):
         self.my_print("点击元素[{0}]".format(xpath))
         sleep(0.5)
         try:
-            self.click(xpath)
+            self.how_click(xpath)
         except:
             try:
                 self.get_element("xpath->//div[@class='popup']")
             except:
                 self.browserRoll(xpath)
-                self.click(xpath)
+                self.how_click(xpath)
+
+    def how_click(self, xpath):
+        if self.Browser == "ie":
+            self.js_click(xpath)
+        else:
+            self.click(xpath)
 
     def get_img(self, file_name):
         """

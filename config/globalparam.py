@@ -33,9 +33,9 @@ browser = 'ie'
 # browser = 'ff'  # 版本太低
 
 # 测试数据路径
-data_path = os.path.join(prj_path, 'data')  # 项目路径+data文件夹
+data_path = os.path.join(prj_path, 'data\pc')  # 项目路径+data文件夹
 # 移动端测试数据路径
-data_mobile_path = os.path.join(prj_path, "data_mobile")
+data_mobile_path = os.path.join(prj_path, "data\mobile")
 
 # 用例执行模式(0：执行调试用例，1:执行所有level1用例，2：执行所有level2及以上用例，3：执行所有level3及以上用例，4：执行所有用例)
 usecase_run_mode = 4

@@ -47,7 +47,7 @@ if __name__ == '__main__':
     allItemData.append(dataHead)
     for i in range(1,table.nrows):
         item = list()
-        # print(table.row_values(i))
+        print(table.row_values(i))
         try:
             item.append(itemBillType[table.row_values(i)[1]])
         except Exception as e:

@@ -94,7 +94,7 @@ class test_{1}(mytest.MyMobileTest):
                 self.createTestCase(self.setTemplateStr(), self.setFilePath())
 
     def setFilePath(self):
-        billBroupDir = os.path.join(os.path.abspath('..'), 'testcase', self.billDataDict["billGroup"].lower())
+        billBroupDir = os.path.join(os.path.abspath('../..'), 'testcase', self.billDataDict["billGroup"].lower())
         # 使用billCode作为文件名称
         billFilePath = os.path.join(billBroupDir, "test_" + self.billDataDict["billCode"] + ".py")
         if os.path.exists(billBroupDir) is False:

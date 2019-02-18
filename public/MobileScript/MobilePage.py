@@ -36,8 +36,8 @@ class MobilePage(Page):
     def filterVerifyData(self, test_data):
         # 1 判断test_data是哪个分组
         #   1.1 判断分组,滚动到分组,点击
-        # 2 使用对应的xpath获取数据
-        # 3 for ele in 获取到的数据:
+        # 2 使用对应的xpath获取元素
+        # 3 for ele in 获取到的元素:
         # 4 返回ele.text
         self.judgeBrowserRoll(test_data["field"], 1)
         if test_data["field"] == "主表区":
@@ -205,14 +205,13 @@ class MobilePage(Page):
             self.selectInput(data["css"], data["itemName"], data["inputValue"])
         elif data["itemType"] == "date":
             self.dateInput(data["css"], data["itemName"], data["inputValue"])
+        elif data["itemName"] in ["申请单号", "合同编号", "发票号码", "单据编号"]:
+            self.otherInput(data["css"], data["itemName"], data["inputValue"])
+        elif data["itemName"] == "对方账户":
+            css = data["css"].replace("input", "div").replace("InceptAccount", "InceptAccount_label")
+            self.selectInput(css, data["itemName"], data["inputValue"])
         else:
-            if data["itemName"] in ["申请单号", "合同编号", "发票号码", "单据编号"]:
-                self.otherInput(data["css"], data["itemName"], data["inputValue"])
-            elif data["itemName"] == "对方账户":
-                css = data["css"].replace("input", "div").replace("InceptAccount", "InceptAccount_label")
-                self.selectInput(css, data["itemName"], data["inputValue"])
-            else:
-                self.typeInput(data["css"], data["itemName"], data["inputValue"])
+            self.typeInput(data["css"], data["itemName"], data["inputValue"])
 
     def otherInput(self, css, column_name, value):
         # 不支持多选
@@ -350,7 +349,6 @@ class MobilePage(Page):
         try:
             erro_ele = self.getElement(mobileConfig.ErrorId)
         except:
-            erro_ele = None
             self.infoPrint("使用用户[{0}]登陆成功".format(userName))
         else:
             raise OwnError.ButtonError(userName, erro_ele.text)
@@ -363,7 +361,7 @@ class MobilePage(Page):
         except:
             pass
         else:
-            if "成功" in text or text.count("-") == 3:
+            if "成功" in text or text.count("-") >= 3:
                 return
             raise OwnError.AlertError(text)
 
