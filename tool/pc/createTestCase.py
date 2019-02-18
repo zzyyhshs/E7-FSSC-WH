@@ -28,7 +28,7 @@ def createTestCase(dataFile,scriptAuthor="cuichang"):
             continue
         if bill[3] == "No":
             continue
-        billBroupDir = os.path.join(os.path.abspath('..'), 'testcase',bill[0].lower())
+        billBroupDir = os.path.join(os.path.abspath('../..'), 'testcase',bill[0].lower())
         #使用billCode作为文件名称
         billFilePath = os.path.join(billBroupDir,"test_"+bill[2]+".py")
         if os.path.exists(billBroupDir) is False:

@@ -82,8 +82,8 @@ if __name__ == '__main__':
             selectElement = fsscTest.dr.get_element(useSelect)
             # Select(selectElement).select_by_index(0)
             # sleep(5)
-            Select(selectElement).select_by_index(1)  # 定位下拉框第一个元素
-            sleep(5)
+            # Select(selectElement).select_by_index(1)  # 定位下拉框第一个元素
+            # sleep(5)
             #获取每个区域根节点元素
             fieldList = fsscTest.dr.get_elements("xpath->//div[@class='rich-panelbar rich-panelbar-interior']")
             fieldTitleList = fsscTest.dr.get_elements("xpath->//div[@class='rich-panelbar rich-panelbar-interior']/div[1]")
