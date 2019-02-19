@@ -22,6 +22,13 @@ class MobilePage(Page):
         self.bill_name = ""
 
     def handleBillAuto(self, next_approve, billTestData, bill_name):
+        """
+        自动审批
+        :param next_approve:下一个审批人
+        :param billTestData:验证数据
+        :param bill_name:单据名
+        :return:
+        """
         if next_approve:
             self.login_Mob(next_approve)
             sleep(3)
@@ -34,6 +41,7 @@ class MobilePage(Page):
             self.handleBillAuto(next_approve, billTestData, bill_name)
 
     def filterVerifyData(self, test_data):
+        """过滤待验证字段信息"""
         # 1 判断test_data是哪个分组
         #   1.1 判断分组,滚动到分组,点击
         # 2 使用对应的xpath获取元素
@@ -44,13 +52,18 @@ class MobilePage(Page):
             elements = self.getElements(mobileConfig.primary_table)
         else:
             elements = self.getElements(mobileConfig.row_path)
+        filed_name = test_data["itemName"] if test_data["itemName"] != "申请人" else "姓名"
         for element in elements:
             filed_list = element.text.split("\n")
-            filed_name = test_data["itemName"] if test_data["itemName"] != "申请人" else "姓名"
             if filed_name in filed_list:
                 return filed_list[1]
 
     def logoutSystem_Mob(self, token=None):
+        """
+        退出登录
+        :param token:
+        :return:
+        """
         if token:
             sleep(3)
             self.click(mobileConfig.get_back_xpath)
@@ -70,6 +83,11 @@ class MobilePage(Page):
         return next_one_approver
 
     def submissionBill(self, bill_name):
+        """
+        提交单据
+        :param bill_name: 单据名
+        :return:
+        """
         # self.dr.driver.refresh()  # 刷新页面
         if traceback.extract_stack()[-2][2] == "handleBillAuto":
             title_xpath = "xpath->//p[text()='{}']".format(bill_name)
@@ -95,6 +113,7 @@ class MobilePage(Page):
         return approver
 
     def searchBill(self, bill_num):
+        """根据单据编号搜索单据"""
         if traceback.extract_stack()[-3][2] == "handleBillAuto":
             search_xpath = mobileConfig.searchNameDSP
         else:
@@ -139,6 +158,7 @@ class MobilePage(Page):
         return self.dr.get_element(verify_data["css"]).get_attribute("value")
 
     def judgeValue(self, actual_value, expected_value, item_name):
+        """验证数据是否一致"""
         if actual_value == expected_value:
             self.infoPrint("[验证成功]{0}：【实际】{1} 【预期】{2}".format(item_name, actual_value, expected_value))
             return True
@@ -148,12 +168,20 @@ class MobilePage(Page):
             return False
 
     def saveBill(self):
+        """保存单据"""
         sleep(1)
         self.click(mobileConfig.save_Btn_xpath)
         sleep(3)
         self.assertEqual("单据保存成功", "保存失败", mobileConfig.pop_up_text)
 
     def assertEqual(self, assert1, msg, xpath):
+        """
+        断言弹框信息是否正常
+        :param assert1:
+        :param msg: 断言失败后的错误信息
+        :param xpath: 元素xpath
+        :return:
+        """
         assert2 = self.getText(xpath)
         self.assertionContain(assert2, assert1, msg)
         sleep(2)
@@ -176,6 +204,12 @@ class MobilePage(Page):
         self.click("xpath->//h1[text()='{}']".format(bill_name))
 
     def judgeBrowserRoll(self, group_name, token=None):
+        """
+        浏览器滚动到指定字段组,未展开的实现展开操作
+        :param group_name: 字段组
+        :param token: 区分 填单=none or 验证
+        :return: None
+        """
         if group_name == "主表区":
             return
         if token:
@@ -201,6 +235,11 @@ class MobilePage(Page):
             self.dr.join_img(self.img_path, img_path)
 
     def inputValue(self, data):
+        """
+        输入数据的分发操作
+        :param data: 字段信息
+        :return:
+        """
         if data["itemType"] == "select":
             self.selectInput(data["css"], data["itemName"], data["inputValue"])
         elif data["itemType"] == "date":
