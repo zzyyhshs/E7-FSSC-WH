@@ -396,8 +396,10 @@ class MobilePage(Page):
             raise OwnError.ButtonError(userName, erro_ele.text)
 
     def click(self, css):
+        """点击操作"""
+        self.getElement(css + "/..")  # 尝试解决有时点击操作会无效的原因
         self.dr.click_Mob(css)
-        try:
+        try:  # 因为点击操作容易出现意外弹框,所以添加获取弹框的操作
             sleep(2)
             text = self.dr.get_element(mobileConfig.pop_up_text).text
         except:
