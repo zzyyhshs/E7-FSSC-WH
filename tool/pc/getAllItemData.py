@@ -28,8 +28,8 @@ def getTrueType(displayType,dataType):
 
 if __name__=='__main__':
     """ 自动生成xpath """
-    itemDataFill = "item_ZR.xls"
-    project = "_中燃项目"
+    itemDataFill = "item.xls"
+    project = ""
     itemBillType = datainfo.getColumnToDict(itemDataFill,"itemBillType","itemBillType","areaName")
     # itemBillType = {itemBillType : areaName}
     itemDisplayType = datainfo.getColumnToDict(itemDataFill, "itemDisplayType", "value", "trueType")

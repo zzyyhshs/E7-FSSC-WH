@@ -90,8 +90,10 @@ get_back_xpath = "xpath->//*[@class='titleColor bar bar-header disable-user-beha
 log_out_xpath = "xpath->//div[@class='label_left sign_out ng-binding']"
 
 """审批通过 or 驳回"""
-verify_pass = "xpath->//a[@id='flowGround']"
-verify_back = "xpath->//a[@id='sendBack']"
+# verify_pass = "xpath->//a[@id='flowGround']"
+verify_pass = "xpath->//a[@class='button btn-sure space_4 ng-binding']"
+# verify_back = "xpath->//a[@id='sendBack']"
+verify_back = "xpath->//a[@class='button btn-cancel space_4 ng-binding']"
 
 """审批账号所有字段"""
 row_path = "xpath->//div[@class='row']"  # 其他区域

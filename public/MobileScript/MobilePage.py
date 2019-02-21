@@ -6,6 +6,7 @@ import re
 from CustomizationError import OwnError
 from public.MobileScript import mobileDataInfo, mobileConfig
 from public.common.basepage import Page
+from public.pages.billTestData import BillTestData
 import traceback
 from selenium.webdriver.support.select import Select
 
@@ -90,7 +91,8 @@ class MobilePage(Page):
         """
         # self.dr.driver.refresh()  # 刷新页面
         if traceback.extract_stack()[-2][2] == "handleBillAuto":
-            title_xpath = "xpath->//p[text()='{}']".format(bill_name)
+            # title_xpath = "xpath->//p[text()='{}']".format(bill_name)
+            title_xpath = "xpath->//h1[text()='{}']".format(bill_name)
             mission_xpath = mobileConfig.verify_pass
         else:
             title_xpath = "xpath->//h1[text()='{}']".format(bill_name)
@@ -134,7 +136,8 @@ class MobilePage(Page):
         :type test_data: <class 'generator'>
         """
         if traceback.extract_stack()[-2][2] == "handleBillAuto":
-            self.getVerifyData = self.filterVerifyData
+            # self.getVerifyData = self.filterVerifyData
+            self.getVerifyData = self.getVerifyText
         else:
             self.getVerifyData = self.getVerifyText
         self.searchBill(self.bill_num)
@@ -400,7 +403,7 @@ class MobilePage(Page):
         except:
             pass
         else:
-            if "成功" in text or text.count("-") >= 3:
+            if "成功" in text or "单据编号:" in text:
                 return
             raise OwnError.AlertError(text)
 

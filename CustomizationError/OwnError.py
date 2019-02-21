@@ -65,7 +65,7 @@ class SelectError(PageError):
 
 class OtherError(PageError):
     def __str__(self):
-        return "错误字段: 【{}：未获取到编号为{}的单据】".format(self.key, self.value)
+        return "错误字段: 【{}：未获取到编号为'{}'的单据】".format(self.key, self.value)
 
 
 class DataError(PageError):
