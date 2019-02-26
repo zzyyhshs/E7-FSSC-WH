@@ -243,6 +243,8 @@ class MobilePage(Page):
         :param data: 字段信息
         :return:
         """
+        if data["inputValue"] == "费用子表" and data["itemName"] != "科目":
+            pass
         if data["itemType"] == "select":
             self.selectInput(data["css"], data["itemName"], data["inputValue"])
         elif data["itemType"] == "date":
@@ -259,7 +261,7 @@ class MobilePage(Page):
         # 不支持多选
         self.infoPrint("输入[{0}],值：{1}".format(column_name, value))
         try:
-            self.dr.click_Mob(css)
+            self.click(css)
         except Exception:
             raise OwnError.SelectError(column_name, css=css)
         sleep(2)
@@ -281,7 +283,7 @@ class MobilePage(Page):
             while i < len(select.options):
                 select.select_by_index(i)
                 try:
-                    self.dr.click_Mob(xpath)
+                    self.click(xpath)
                     sleep(2)
                     self.click(sure_xpath)
                     return
@@ -290,7 +292,7 @@ class MobilePage(Page):
             raise OwnError.OtherError(column_name, value)
         else:
             try:
-                self.dr.click_Mob(xpath)
+                self.click(xpath)
                 sleep(2)
                 self.click(sure_xpath)
             except Exception:
@@ -299,7 +301,7 @@ class MobilePage(Page):
     def dateInput(self, css, column_name, value):
         self.infoPrint("输入[{0}],值：{1}".format(column_name, value))
         try:
-            self.dr.click_Mob(css)
+            self.click(css)
         except Exception:
             raise OwnError.DateError(column_name, css=css)
         sleep(1)
@@ -365,7 +367,7 @@ class MobilePage(Page):
         self.click(mobileConfig.apply_for_xpath)
         sleep(2)
         try:
-            self.dr.click_Mob("xpath->//div[text()='{}']".format(bill))
+            self.click("xpath->//div[text()='{}']".format(bill))
             sleep(2)
         except Exception:
             raise NameError("单据【{0}】在填单列表没有找到".format(bill))
@@ -397,15 +399,17 @@ class MobilePage(Page):
 
     def click(self, css):
         """点击操作"""
-        self.getElement(css + "/..")  # 尝试解决有时点击操作会无效的原因
+        # 尝试解决有时点击操作会无效的原因
+        self.getElement(css + "/..")
         self.dr.click_Mob(css)
-        try:  # 因为点击操作容易出现意外弹框,所以添加获取弹框的操作
+        # 因为点击操作容易出现意外弹框,所以添加获取弹框的操作
+        try:
             sleep(2)
             text = self.dr.get_element(mobileConfig.pop_up_text).text
         except:
             pass
         else:
-            if "成功" in text or "单据编号:" in text:
+            if "成功" in text or "单据编号" in text:
                 return
             raise OwnError.AlertError(text)
 

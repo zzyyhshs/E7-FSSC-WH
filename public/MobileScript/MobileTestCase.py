@@ -9,11 +9,11 @@ import unittest
 from public.pages.billTestData import BillTestData
 
 
-class test_WBZ_SXSQD1(mytest.MyMobileTest):
+class test_1(mytest.MyMobileTest):
     """测试单据-{2}-{3}"""
 
     @unittest.skipUnless(globalparam.usecase_run_mode >= 1, "")
-    def test_WBZ_SXSQD1_01(self):
+    def test_0_5(self):
         """测试单据-{2}-{3}-{5}"""
         # 初始化测试对象
         fsscTest = MobilePage(self.dr)
