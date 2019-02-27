@@ -66,11 +66,10 @@ class MobilePage(Page):
         :return:
         """
         if token:
-            sleep(3)
             self.click(mobileConfig.get_back_xpath)
-        sleep(3)
+        sleep(1)
         self.click(mobileConfig.my_for_xpath)
-        sleep(3)
+        sleep(1)
         self.click(mobileConfig.log_out_xpath)
         sleep(3)
 
@@ -147,7 +146,7 @@ class MobilePage(Page):
                 sleep(1)
                 self.judgeBrowserRoll(verify_data["field"], 1)
                 actual_value = self.getVerifyData(verify_data)
-                sleep(3)
+                sleep(1)
                 if verify_data["itemType"] == "currency":
                     self.judgeValue(float(actual_value), float(verify_data["verifyValue"]), verify_data["itemName"])
                 else:
@@ -368,7 +367,6 @@ class MobilePage(Page):
         sleep(2)
         try:
             self.click("xpath->//div[text()='{}']".format(bill))
-            sleep(2)
         except Exception:
             raise NameError("单据【{0}】在填单列表没有找到".format(bill))
 
@@ -380,16 +378,13 @@ class MobilePage(Page):
         except Exception:
             raise OwnError.UserError(user_name)
         self.loginSystem_Mob(username, password)
-        sleep(3)
 
     def loginSystem_Mob(self, userName, password):  # 登录系统
         self.infoPrint("使用用户[{0}]登陆系统：{0}".format(userName))
         self.inputUserName_Mob(userName)
-        sleep(1)
         self.inputPassword_Mob(password)
-        sleep(2)
+        sleep(0.5)
         self.clickLoginButton_Mob()
-        sleep(2)
         try:
             erro_ele = self.getElement(mobileConfig.ErrorId)
         except:
@@ -399,6 +394,16 @@ class MobilePage(Page):
 
     def click(self, css):
         """点击操作"""
+        unm_time = 0
+        # 解决页面还在加载中,就去进行后续操作从而导致异常
+        while True:
+            lodaing = self.getElement("xpath->//div[@class='loading']")
+            if not lodaing.is_displayed():
+                break
+            if unm_time >= 30:
+                raise OwnError.AlertError("页面加载时间超过{}秒".format(unm_time))
+            unm_time += 0.5
+            sleep(0.5)
         # 尝试解决有时点击操作会无效的原因
         self.getElement(css + "/..")
         self.dr.click_Mob(css)
