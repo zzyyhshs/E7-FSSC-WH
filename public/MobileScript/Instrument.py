@@ -109,7 +109,7 @@ class MobileSelenium(PySelenium):
     def print_img(self):
         """截取图片打印到测试报告"""
         path = os.path.join(globalparam.mobile_img_path,
-                            "图片路径_" + time.strftime("%Y-%m-%d_%H_%M_%S") + '.png')
+                            "img_path_" + time.strftime("%Y-%m-%d_%H_%M_%S") + '.png')
         self.driver.get_screenshot_as_file(path)
         with open(path, 'rb') as file:
             data = file.read()

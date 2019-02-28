@@ -90,13 +90,12 @@ class MobilePage(Page):
         """
         # self.dr.driver.refresh()  # 刷新页面
         if traceback.extract_stack()[-2][2] == "handleBillAuto":
-            # title_xpath = "xpath->//p[text()='{}']".format(bill_name)
-            title_xpath = "xpath->//h1[text()='{}']".format(bill_name)
+            # title_xpath = "xpath->//*[text()='{}']".format(bill_name)
             mission_xpath = mobileConfig.verify_pass
         else:
-            title_xpath = "xpath->//h1[text()='{}']".format(bill_name)
+            # title_xpath = "xpath->//*[text()='{}']".format(bill_name)
             mission_xpath = mobileConfig.mission_bill_xpath
-        self.dr.browserRoll(title_xpath)
+        # self.dr.browserRoll(title_xpath)
         sleep(1)
         self.click(mission_xpath)
         sleep(3)
@@ -226,6 +225,7 @@ class MobilePage(Page):
                 self.click(xpath)
                 self.dr.browserRoll(xpath)
             self.last_group_xpath = xpath
+        self.dr.browserRoll("xpath->//*[@class='title color-white ng-binding']")
 
     def setScreenshot(self):
         """截图, 拼接"""
@@ -364,7 +364,7 @@ class MobilePage(Page):
     def intoFillBillPage(self, bill):
         self.infoPrint("进入申请页面")
         self.click(mobileConfig.apply_for_xpath)
-        sleep(2)
+        sleep(1)
         try:
             self.click("xpath->//div[text()='{}']".format(bill))
         except Exception:
@@ -392,24 +392,31 @@ class MobilePage(Page):
         else:
             raise OwnError.ButtonError(userName, erro_ele.text)
 
-    def click(self, css):
-        """点击操作"""
+    def load_page(self, wait_time: int = 30):
+        # 解决页面还在加载中,就去进行后续点击操作从而导致异常
         unm_time = 0
-        # 解决页面还在加载中,就去进行后续操作从而导致异常
+        sleep(1)
+        lodaing = self.getElement("xpath->//div[@class='loading']")
         while True:
-            lodaing = self.getElement("xpath->//div[@class='loading']")
             if not lodaing.is_displayed():
                 break
-            if unm_time >= 30:
+            else:
+                unm_time += 0.5
+                sleep(0.5)
+            if unm_time >= wait_time:
                 raise OwnError.AlertError("页面加载时间超过{}秒".format(unm_time))
-            unm_time += 0.5
-            sleep(0.5)
+        self.get_popup()
+
+    def click(self, css):
+        """点击操作"""
         # 尝试解决有时点击操作会无效的原因
-        self.getElement(css + "/..")
+        self.getElement(css + "/..").size
         self.dr.click_Mob(css)
+        self.load_page()
+
+    def get_popup(self):
         # 因为点击操作容易出现意外弹框,所以添加获取弹框的操作
         try:
-            sleep(2)
             text = self.dr.get_element(mobileConfig.pop_up_text).text
         except:
             pass
@@ -428,7 +435,7 @@ class MobilePage(Page):
             self.dr.element_wait(mobileConfig.LoginButton, secs=10)
         except:
             self.dr.open(system_address)
-        sleep(3)
+        self.load_page()
 
     def inputUserName_Mob(self, user_name):  # 输入用户名
         self.typeInput(mobileConfig.UserName, "用户名", user_name)
