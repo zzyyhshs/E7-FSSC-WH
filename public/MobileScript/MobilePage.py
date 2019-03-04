@@ -304,9 +304,7 @@ class MobilePage(Page):
         except Exception:
             raise OwnError.DateError(column_name, css=css)
         sleep(1)
-        if value == "today":
-            self.click("xpath->//td[text()='今天']")
-        elif "-" in value:
+        if "-" in value:
             try:
                 self.click("xpath->//td[@date='{}']".format(value))
             except Exception:
@@ -396,6 +394,7 @@ class MobilePage(Page):
         # 解决页面还在加载中,就去进行后续点击操作从而导致异常
         unm_time = 0
         sleep(1)
+        self.dr.element_wait("xpath->//div[@class='loading']")
         lodaing = self.getElement("xpath->//div[@class='loading']")
         while True:
             if not lodaing.is_displayed():

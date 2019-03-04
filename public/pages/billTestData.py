@@ -1,5 +1,6 @@
 import threading
-
+from datetime import date
+import time
 from public.common import datainfo
 from public.MobileScript import mobileDataInfo
 from xlrd import xldate_as_tuple
@@ -41,16 +42,15 @@ class BillTestData(object):
         else:
             return str(value).strip()
 
-    def getDate(self, date):
-        if not isinstance(date, str):
-            time_tup = xldate_as_tuple(date, 0)
-            date = str(time_tup[0])
-            for i in time_tup[1:3]:
-                if 0 < i < 10:
-                    date = date + "-0" + str(i)
-                else:
-                    date = date + "-" + str(i)
-        return date
+    def getDate(self, date_str):
+        if not isinstance(date_str, str):
+            time_tup = xldate_as_tuple(date_str, 0)
+            new_date_str = date(*time_tup[:3]).strftime("%Y-%m-%d")
+        elif date_str == "today":
+            new_date_str = time.strftime("%Y-%m-%d")
+        else:
+            new_date_str = date_str
+        return new_date_str
 
     @property
     def billInputData(self):
@@ -97,16 +97,16 @@ if __name__ == '__main__':
 
     for i in testCaseData.billInputData:
         print("{}-{}-{}-{}".format(i['itemName'], i['itemType'], i['inputValue'], i['verifyValue']))
-    print("*" * 50)
-    testCaseFile = "zq费用报销组\\1.2-zq费用报销单（无申请).xls"
-    testCaseData = BillTestData.instance(testCaseFile, 1)
-
-    for i in testCaseData.billInputData:
-        print("{}-{}-{}-{}".format(i['itemName'], i['itemType'], i['inputValue'], i['verifyValue']))
-
-    print("*" * 50)
-    testCaseFile = "zq费用报销组\\1.1-zq日常费用申请单.xls"
-    testCaseData = BillTestData.instance(testCaseFile, 1)
-
-    for i in testCaseData.billInputData:
-        print("{}-{}-{}-{}".format(i['itemName'], i['itemType'], i['inputValue'], i['verifyValue']))
+    # print("*" * 50)
+    # testCaseFile = "zq费用报销组\\1.2-zq费用报销单（无申请).xls"
+    # testCaseData = BillTestData.instance(testCaseFile, 1)
+    #
+    # for i in testCaseData.billInputData:
+    #     print("{}-{}-{}-{}".format(i['itemName'], i['itemType'], i['inputValue'], i['verifyValue']))
+    #
+    # print("*" * 50)
+    # testCaseFile = "zq费用报销组\\1.1-zq日常费用申请单.xls"
+    # testCaseData = BillTestData.instance(testCaseFile, 1)
+    #
+    # for i in testCaseData.billInputData:
+    #     print("{}-{}-{}-{}".format(i['itemName'], i['itemType'], i['inputValue'], i['verifyValue']))
