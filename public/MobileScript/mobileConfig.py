@@ -24,7 +24,7 @@ action = [["serialNumber", "user", "action"], ["1", "张一", "填单"], ["2", "
 """移动端xpath"""
 UserName = "id->loginNameInput"
 UserPwd = "id->passwordInput"
-LoginButton = "xpath->//button[@class='button login-btn']"
+LoginButton = "xpath->//div[@class='scroll']/button"
 ErrorId = "xpath->//div[@class='erroID']"
 
 apply_for_xpath = "xpath->//a[@class='titleName tab-item' and @title='申请']"
