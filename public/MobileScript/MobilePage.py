@@ -14,15 +14,15 @@ from selenium.webdriver.support.select import Select
 class MobilePage(Page):
     allUserDict = mobileDataInfo.getAllUsers("allBaseData.xls", "user", "name")
 
-    def __init__(self, selenium_driver):
+    def __init__(self, selenium_driver, bill_name):
         super().__init__(selenium_driver)
         self.wrong_data = ""
         self.last_group_xpath = ""
         self.bill_num = ""
         self.img_path = ""
-        self.bill_name = ""
+        self.bill_name = bill_name
 
-    def handleBillAuto(self, next_approve, billTestData, bill_name):
+    def handleBillAuto(self, next_approve, billTestData):
         """
         自动审批
         :param next_approve:下一个审批人
@@ -37,9 +37,9 @@ class MobilePage(Page):
             sleep(3)
             verifyResult = self.verifyBillValue(billTestData)
             assert verifyResult == 0, self.wrong_data
-            next_approve = self.submissionBill(bill_name)
+            next_approve = self.submissionBill()
             self.logoutSystem_Mob()
-            self.handleBillAuto(next_approve, billTestData, bill_name)
+            self.handleBillAuto(next_approve, billTestData)
 
     def filterVerifyData(self, test_data):
         """过滤待验证字段信息"""
@@ -82,7 +82,7 @@ class MobilePage(Page):
         sleep(3)
         return next_one_approver
 
-    def submissionBill(self, bill_name):
+    def submissionBill(self):
         """
         提交单据
         :param bill_name: 单据名
@@ -90,10 +90,10 @@ class MobilePage(Page):
         """
         # self.dr.driver.refresh()  # 刷新页面
         if traceback.extract_stack()[-2][2] == "handleBillAuto":
-            # title_xpath = "xpath->//*[text()='{}']".format(bill_name)
+            # title_xpath = "xpath->//*[text()='{}']".format(self.bill_name)
             mission_xpath = mobileConfig.verify_pass
         else:
-            # title_xpath = "xpath->//*[text()='{}']".format(bill_name)
+            # title_xpath = "xpath->//*[text()='{}']".format(self.bill_name)
             mission_xpath = mobileConfig.mission_bill_xpath
         # self.dr.browserRoll(title_xpath)
         sleep(1)
@@ -134,8 +134,8 @@ class MobilePage(Page):
         :type test_data: <class 'generator'>
         """
         if traceback.extract_stack()[-2][2] == "handleBillAuto":
-            # self.getVerifyData = self.filterVerifyData
-            self.getVerifyData = self.getVerifyText
+            self.getVerifyData = self.filterVerifyData
+            # self.getVerifyData = self.getVerifyText
         else:
             self.getVerifyData = self.getVerifyText
         self.searchBill(self.bill_num)
@@ -189,7 +189,7 @@ class MobilePage(Page):
         self.infoPrint(assert1)
         self.click(mobileConfig.pop_up_sure)
 
-    def typeInputBillValue(self, billTestData, bill_name):
+    def typeInputBillValue(self, billTestData):
         """
         输入数据
         :param bill_name: 单据名
@@ -202,7 +202,7 @@ class MobilePage(Page):
                 self.inputValue(data)
         self.setScreenshot()
         self.img_path = ""
-        self.click("xpath->//h1[text()='{}']".format(bill_name))
+        self.click("xpath->//h1[text()='{}']".format(self.bill_name))
 
     def judgeBrowserRoll(self, group_name, token=None):
         """
@@ -225,7 +225,7 @@ class MobilePage(Page):
                 self.click(xpath)
                 self.dr.browserRoll(xpath)
             self.last_group_xpath = xpath
-        self.dr.browserRoll("xpath->//*[@class='title color-white ng-binding']")
+        self.dr.browserRoll("xpath->//*[text()='{}']".format(self.bill_name))
 
     def setScreenshot(self):
         """截图, 拼接"""
@@ -359,14 +359,14 @@ class MobilePage(Page):
         else:
             raise NameError("获取的单据编号为空")
 
-    def intoFillBillPage(self, bill):
+    def intoFillBillPage(self):
         self.infoPrint("进入申请页面")
         self.click(mobileConfig.apply_for_xpath)
         sleep(1)
         try:
-            self.click("xpath->//div[text()='{}']".format(bill))
+            self.click("xpath->//div[text()='{}']".format(self.bill_name))
         except Exception:
-            raise NameError("单据【{0}】在填单列表没有找到".format(bill))
+            raise NameError("单据【{0}】在填单列表没有找到".format(self.bill_name))
 
     def login_Mob(self, user_name):
         self.infoPrint("用户【{0}】登陆系统".format(user_name))

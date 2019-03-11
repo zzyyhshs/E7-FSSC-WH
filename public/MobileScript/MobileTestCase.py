@@ -15,27 +15,27 @@ class test_1(mytest.MyMobileTest):
     @unittest.skipUnless(globalparam.usecase_run_mode >= 1, "")
     def test_0_5(self):
         """测试单据-{2}-{3}-{5}"""
-        # 初始化测试对象
-        fsscTest = MobilePage(self.dr)
         # 准备测试数据
-        billName = "1.2-zq费用报销单（无申请)"
-        fillPerson = "测试一号"
-        approvalModel = "Auto"
-        testCaseFile = "zq费用报销组\\1.2-zq费用报销单（无申请).xls"
-        testCaseData = BillTestData.instance(testCaseFile, 1)
+        bill_name = "1.1-zq日常费用申请单"
+        fill_person = "测试一号"
+        approval_model = "Auto"
+        test_case_file = "zq费用报销组\\1.1-zq日常费用申请单.xls"
+        # 初始化测试对象
+        fssc_test = MobilePage(self.dr, bill_name)
+        test_case_data = BillTestData.instance(test_case_file, 1)
         # 打开系统
-        fsscTest.openSystem_Mob(globalparam.mobile_sys_address)
-        fsscTest.login_Mob(fillPerson)
-        fsscTest.intoFillBillPage(billName)
-        fsscTest.getBillNum()
-        fsscTest.typeInputBillValue(testCaseData.billInputData, billName)
-        fsscTest.saveBill()
-        verifyResult = fsscTest.verifyBillValue(testCaseData.billInputData)
-        self.assertFalse(verifyResult, fsscTest.wrong_data)
-        nextApprove = fsscTest.submissionBill(billName)
-        fsscTest.logoutSystem_Mob(1)
-        if approvalModel == "Auto":
-            fsscTest.handleBillAuto(nextApprove, testCaseData.billInputData, billName)
+        fssc_test.openSystem_Mob(globalparam.mobile_sys_address)
+        fssc_test.login_Mob(fill_person)
+        fssc_test.intoFillBillPage()
+        fssc_test.getBillNum()
+        fssc_test.typeInputBillValue(test_case_data.billInputData)
+        fssc_test.saveBill()
+        verify_result = fssc_test.verifyBillValue(test_case_data.billInputData)
+        self.assertFalse(verify_result, fssc_test.wrong_data)
+        next_approve = fssc_test.submissionBill()
+        fssc_test.logoutSystem_Mob(1)
+        if approval_model == "Auto":
+            fssc_test.handleBillAuto(next_approve, test_case_data.billInputData)
 
 
 if __name__ == '__main__':
