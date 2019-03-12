@@ -44,7 +44,8 @@ class test_{1}(mytest.MyMobileTest):
         next_approve = fssc_test.submissionBill()
         fssc_test.logoutSystem_Mob(1)
         if approval_model == "Auto":
-            fssc_test.handleBillAuto(next_approve, test_case_data.billInputData)
+            while next_approve:
+                next_approve = fssc_test.handleBillAuto(next_approve, test_case_data.billInputData)
 """
 
     def __init__(self, data_file):

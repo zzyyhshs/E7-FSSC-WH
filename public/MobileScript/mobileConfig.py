@@ -91,13 +91,13 @@ log_out_xpath = "xpath->//div[@class='label_left sign_out ng-binding']"
 
 """审批通过 or 驳回"""
 # verify_pass = "xpath->//a[@id='flowGround']"
-verify_pass = "xpath->//ion-view[@class='approvalDetail pane']/ion-footer-bar/a[text()='同意']"
+verify_pass = "xpath->//ion-footer-bar/a[text()='同意']"
 # verify_back = "xpath->//a[@id='sendBack']"
-verify_back = "xpath->//ion-view[@class='approvalDetail pane']/ion-footer-bar/a[text()='驳回']"
+verify_back = "xpath->//ion-footer-bar/a[text()='驳回']"
 
 """审批账号所有字段"""
 row_path = "xpath->//div[@class='row']"  # 其他区域
-primary_table = "xpath->//div[@class='stripeTop']"  # 主表区
+primary_table = "xpath->//div[@class='stripeTop']"  # 主表区 ####
 group_by_xpath = "xpath->//div[@class='blue-color']"
 
 group_field_dict = {

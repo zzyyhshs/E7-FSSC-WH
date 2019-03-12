@@ -95,18 +95,10 @@ if __name__ == '__main__':
     testCaseFile = "zq费用报销组\\1.1-zq日常费用申请单.xls"
     testCaseData = BillTestData.instance(testCaseFile, 1)
 
-    for i in testCaseData.billInputData:
+    a = testCaseData.billInputData
+    for i in a:
         print("{}-{}-{}-{}".format(i['itemName'], i['itemType'], i['inputValue'], i['verifyValue']))
-    # print("*" * 50)
-    # testCaseFile = "zq费用报销组\\1.2-zq费用报销单（无申请).xls"
-    # testCaseData = BillTestData.instance(testCaseFile, 1)
-    #
-    # for i in testCaseData.billInputData:
-    #     print("{}-{}-{}-{}".format(i['itemName'], i['itemType'], i['inputValue'], i['verifyValue']))
-    #
-    # print("*" * 50)
-    # testCaseFile = "zq费用报销组\\1.1-zq日常费用申请单.xls"
-    # testCaseData = BillTestData.instance(testCaseFile, 1)
-    #
-    # for i in testCaseData.billInputData:
-    #     print("{}-{}-{}-{}".format(i['itemName'], i['itemType'], i['inputValue'], i['verifyValue']))
+    print("*"*50)
+
+    for i in a:
+        print("{}-{}-{}-{}".format(i['itemName'], i['itemType'], i['inputValue'], i['verifyValue']))

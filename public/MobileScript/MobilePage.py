@@ -30,16 +30,16 @@ class MobilePage(Page):
         :param bill_name:单据名
         :return:
         """
-        if next_approve:
-            self.login_Mob(next_approve)
-            sleep(3)
-            self.click(mobileConfig.approve_for_xpath)
-            sleep(3)
-            verifyResult = self.verifyBillValue(billTestData)
-            assert verifyResult == 0, self.wrong_data
-            next_approve = self.submissionBill()
-            self.logoutSystem_Mob()
-            self.handleBillAuto(next_approve, billTestData)
+        # if next_approve:
+        self.login_Mob(next_approve)
+        sleep(3)
+        self.click(mobileConfig.approve_for_xpath)
+        sleep(3)
+        verifyResult = self.verifyBillValue(billTestData)
+        assert verifyResult == 0, self.wrong_data
+        next_approve = self.submissionBill()
+        self.logoutSystem_Mob()
+        return next_approve
 
     def filterVerifyData(self, test_data):
         """过滤待验证字段信息"""
@@ -134,8 +134,8 @@ class MobilePage(Page):
         :type test_data: <class 'generator'>
         """
         if traceback.extract_stack()[-2][2] == "handleBillAuto":
-            self.getVerifyData = self.filterVerifyData
-            # self.getVerifyData = self.getVerifyText
+            # self.getVerifyData = self.filterVerifyData
+            self.getVerifyData = self.getVerifyText
         else:
             self.getVerifyData = self.getVerifyText
         self.searchBill(self.bill_num)
