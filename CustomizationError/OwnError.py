@@ -33,7 +33,7 @@ class AlertError(PageError):
 
 class UserError(PageError):
     def __str__(self):
-        return "为获取到用户: {}; 请在: data_mobile/allBaseData.xls中添加用户".format(self.key)
+        return "未获取到用户: {}; 请在: data_mobile/allBaseData.xls中添加用户".format(self.key)
 
 
 class ButtonError(PageError):

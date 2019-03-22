@@ -67,11 +67,11 @@ class MobilePage(Page):
         """
         if token:
             self.click(mobileConfig.get_back_xpath)
-        sleep(1)
+        # sleep(1)
         self.click(mobileConfig.my_for_xpath)
-        sleep(1)
+        # sleep(1)
         self.click(mobileConfig.log_out_xpath)
-        sleep(3)
+        sleep(2)
 
     def getNextOneApprover(self):
         self.infoPrint("获取下一节点审批人")
@@ -79,8 +79,28 @@ class MobilePage(Page):
             next_one_approver = self.dr.get_element(mobileConfig.next_one_approver_xpath).text
         except:
             next_one_approver = None
-        sleep(3)
+        # sleep(2)
+        # if next_one_approver == "待派工":
+        #     approver = "测试二号"
+        #     # self.add_approver(value=approver)
+        #     return approver
         return next_one_approver
+
+    def add_approver(self, column_name="添加审批人", value="测试三号"):
+        self.click("xpath->//a[text()='加审']")
+        # sleep(1)
+        self.click("xpath->//div[@ng-show='!isSignS']/div/a[1]")
+        self.click(mobileConfig.search_input_xpath)
+        self.clearType(mobileConfig.search_input_xpath2, value)
+        # sleep(2)
+        self.click(mobileConfig.search_submit_xpath3)
+        try:
+            xpath = "xpath->//div[@class='scroll']/ul/li[@class='children-li'][1]"
+            self.click(xpath)
+        except Exception:
+            raise OwnError.SelectError(column_name, value=value)
+        # sleep(0.5)
+        self.click(mobileConfig.select_sure4)
 
     def submissionBill(self):
         """
@@ -96,12 +116,12 @@ class MobilePage(Page):
             # title_xpath = "xpath->//*[text()='{}']".format(self.bill_name)
             mission_xpath = mobileConfig.mission_bill_xpath
         # self.dr.browserRoll(title_xpath)
-        sleep(1)
+        # sleep(1)
         self.click(mission_xpath)
-        sleep(3)
+        # sleep(3)
         approver = self.getNextOneApprover()
         self.click(mobileConfig.make_sure_xpath)
-        sleep(3)
+        # sleep(3)
         self.assertEqual("提交成功", "提交失败", mobileConfig.pop_up_text)
         # 再次尝试获取同意按钮
         try:
@@ -119,13 +139,13 @@ class MobilePage(Page):
         else:
             search_xpath = mobileConfig.searchNameDCL
         # print(traceback.extract_stack()[-3][2])
-        sleep(3)
+        # sleep(3)
         self.dr.clear_type(search_xpath, bill_num)
-        sleep(3)
+        # sleep(3)
         self.click(mobileConfig.search_submit_xpath)
-        sleep(2)
+        # sleep(2)
         self.click(mobileConfig.find_the_bill)
-        sleep(1)
+        # sleep(1)
 
     def verifyBillValue(self, test_data):
         """
@@ -142,10 +162,10 @@ class MobilePage(Page):
         self.wrong_data = ""
         for verify_data in test_data:
             if verify_data["verifyValue"] and verify_data["verifyShow"]:
-                sleep(1)
+                # sleep(1)
                 self.judgeBrowserRoll(verify_data["field"], 1)
                 actual_value = self.getVerifyData(verify_data)
-                sleep(1)
+                # sleep(1)
                 if verify_data["itemType"] == "currency":
                     self.judgeValue(float(actual_value), float(verify_data["verifyValue"]), verify_data["itemName"])
                 else:
@@ -170,9 +190,9 @@ class MobilePage(Page):
 
     def saveBill(self):
         """保存单据"""
-        sleep(1)
+        # sleep(1)
         self.click(mobileConfig.save_Btn_xpath)
-        sleep(3)
+        # sleep(3)
         self.assertEqual("单据保存成功", "保存失败", mobileConfig.pop_up_text)
 
     def assertEqual(self, assert1, msg, xpath):
@@ -197,7 +217,7 @@ class MobilePage(Page):
         """
         for data in billTestData:
             if data["inputShow"] and data["inputValue"]:
-                sleep(1)
+                # sleep(1)
                 self.judgeBrowserRoll(data["field"])
                 self.inputValue(data)
         self.setScreenshot()
@@ -214,7 +234,7 @@ class MobilePage(Page):
         if group_name == "主表区":
             return
         if token:
-            xpath = "xpath->//label[text()='{}']".format(mobileConfig.group_field_dict[group_name])
+            xpath = "xpath->//label[text()='{}']/..".format(mobileConfig.group_field_dict[group_name])
         else:
             xpath = mobileConfig.Area_dict[group_name]
         if self.last_group_xpath != xpath:
@@ -263,7 +283,7 @@ class MobilePage(Page):
             self.click(css)
         except Exception:
             raise OwnError.SelectError(column_name, css=css)
-        sleep(2)
+        # sleep(2)
         if column_name == "发票号码":
             xpath = "xpath->//label[text()='{}']/../../../preceding-sibling::div[1]/input".format(value)
             sure_xpath = mobileConfig.select_sure3
@@ -283,7 +303,7 @@ class MobilePage(Page):
                 select.select_by_index(i)
                 try:
                     self.click(xpath)
-                    sleep(2)
+                    # sleep(2)
                     self.click(sure_xpath)
                     return
                 except:
@@ -292,7 +312,7 @@ class MobilePage(Page):
         else:
             try:
                 self.click(xpath)
-                sleep(2)
+                # sleep(2)
                 self.click(sure_xpath)
             except Exception:
                 raise OwnError.OtherError(column_name, value)
@@ -303,7 +323,7 @@ class MobilePage(Page):
             self.click(css)
         except Exception:
             raise OwnError.DateError(column_name, css=css)
-        sleep(1)
+        # sleep(1)
         if "-" in value:
             try:
                 self.click("xpath->//td[@date='{}']".format(value))
@@ -315,7 +335,7 @@ class MobilePage(Page):
     def selectSearchValue(self, column_name, value):
         self.click(mobileConfig.search_input_xpath)
         self.clearType(mobileConfig.search_input_xpath2, value)
-        sleep(2)
+        # sleep(2)
         self.click(mobileConfig.search_submit_xpath3)
         try:
             xpath = "xpath->//div[@class='scroll']/ul/li[@class='children-li'][2]"
@@ -329,15 +349,15 @@ class MobilePage(Page):
             self.click(css)
         except Exception:
             raise OwnError.SelectError(column_name, css=css)
-        sleep(1)
+        # sleep(1)
         self.dr.element_wait(mobileConfig.search_input_xpath, 10)
-        sleep(1)
+        # sleep(1)
         if column_name == "受益人":
             if ";" in value:
                 beneficiary_list = re.findall(r"(.*?);", value)
             else:
                 beneficiary_list = [value]
-            sleep(1)
+            # sleep(1)
             for beneficiary in beneficiary_list:
                 self.selectSearchValue(column_name, beneficiary)
                 sleep(0.5)
@@ -409,7 +429,7 @@ class MobilePage(Page):
     def click(self, css):
         """点击操作"""
         # 尝试解决有时点击操作会无效的原因
-        self.getElement(css + "/..").size
+        web_element = self.getElement(css + "/..")
         self.dr.click_Mob(css)
         self.load_page()
 

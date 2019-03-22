@@ -45,7 +45,7 @@ usecase_run_mode = 4
 
 # 被测系统地址
 # system_address = "http://192.168.64.11:9000/e7-fssc/pages/login.jsp "
-system_address = "http://192.168.64.12:9000/e7-fssc/pages/login.jsp "
+system_address = "http://192.168.64.12:9000/pages/login.jsp"
 mobile_sys_address = "http://192.168.48.115:8050/e7/#/login"
 
 # system_address = 'http://172.16.100.38:9901/e7-fssc/pages/home.jsp'
