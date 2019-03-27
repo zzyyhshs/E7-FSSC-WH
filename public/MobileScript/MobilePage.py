@@ -14,7 +14,7 @@ from selenium.webdriver.support.select import Select
 class MobilePage(Page):
     allUserDict = mobileDataInfo.getAllUsers("allBaseData.xls", "user", "name")
 
-    def __init__(self, selenium_driver, bill_name):
+    def __init__(self, selenium_driver, bill_name=None):
         super().__init__(selenium_driver)
         self.wrong_data = ""
         self.last_group_xpath = ""
@@ -382,7 +382,9 @@ class MobilePage(Page):
     def intoFillBillPage(self):
         self.infoPrint("进入申请页面")
         self.click(mobileConfig.apply_for_xpath)
-        sleep(1)
+        ele = self.getElement("xpath->//select[@id='orgId']")
+        select = Select(ele)
+        select.select_by_index(1)
         try:
             self.click("xpath->//div[text()='{}']".format(self.bill_name))
         except Exception:
