@@ -384,7 +384,9 @@ class MobilePage(Page):
         self.click(mobileConfig.apply_for_xpath)
         ele = self.getElement("xpath->//select[@id='orgId']")
         select = Select(ele)
-        select.select_by_index(1)
+        if select.first_selected_option.text != "E7测试":
+            select.select_by_visible_text("E7测试")
+            sleep(0.5)
         try:
             self.click("xpath->//div[text()='{}']".format(self.bill_name))
         except Exception:
