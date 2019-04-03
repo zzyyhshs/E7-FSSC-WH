@@ -62,7 +62,7 @@ if __name__ == '__main__':
         elif item[2] == "select":
             item.append("xpath->//div[@itemvarname='{0}{1}' and @itemid='{2}']".format(table.row_values(i)[5],"_label",table.row_values(i)[0]))
         elif item[2] == "textarea":
-            item.append("xpath->//input[@itemvarname='{0}' and @itemid='{1}']".format(table.row_values(i)[5],table.row_values(i)[0]))
+            item.append("xpath->//*[@itemvarname='{0}' and @itemid='{1}']".format(table.row_values(i)[5],table.row_values(i)[0]))
         # print(item)
         allItemData.append(item)
     file_path = os.path.join(globalparam.data_mobile_path, "allItemData"+project+".xls")

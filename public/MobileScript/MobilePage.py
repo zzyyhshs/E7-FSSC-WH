@@ -102,14 +102,18 @@ class MobilePage(Page):
         # sleep(0.5)
         self.click(mobileConfig.select_sure4)
 
+    def refresh(self, second=5):
+        # 刷新页面
+        self.dr.driver.refresh()
+        self.load_page(second)
+
     def submissionBill(self):
         """
         提交单据
         :param bill_name: 单据名
         :return:
         """
-        self.dr.driver.refresh()  # 刷新页面
-        sleep(1)
+        self.refresh()
         if traceback.extract_stack()[-2][2] == "handleBillAuto":
             self.click(mobileConfig.verify_pass)
         else:
@@ -406,16 +410,20 @@ class MobilePage(Page):
         else:
             raise OwnError.ButtonError(userName, erro_ele.text)
 
-    def load_page(self, wait_time: int = 30):
+    def load_page(self, second: int = 30):
         # 解决页面还在加载中,就去进行后续点击操作从而导致异常
         unm_time = 0
         sleep(1)
-        self.dr.element_wait("xpath->//div[@class='loading']")
-        lodaing = self.getElement("xpath->//div[@class='loading']")
+        try:
+            self.dr.element_wait("xpath->//div[@class='loading']")
+            lodaing = self.getElement("xpath->//div[@class='loading']")
+        except:
+            # 针对mobile tool 操作的是pc端页面,获取不到 loading元素
+            return
         while True:
             if not lodaing.is_displayed():
                 break
-            elif unm_time >= wait_time:
+            elif unm_time >= second:
                 raise OwnError.AlertError("页面加载时间超过{}秒".format(unm_time))
             else:
                 unm_time += 0.5
