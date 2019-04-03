@@ -81,13 +81,13 @@ searchNameYWC = "xpath->//input[@id='searchNameYWC']"  # 已完成
 find_the_bill = "xpath->//div[@class='cardOne col-90'][1]"  # 查找到的单据
 
 """提交单据"""
-mission_bill_xpath = "xpath->//a[@class='button button-submit ng-binding']"
+mission_bill_xpath = "xpath->//*[text()='提交审批']"
 next_one_approver_xpath = "xpath->//div[@class='person ng-binding']"
 make_sure_xpath = "xpath->//a[@class='button btn-sure space_4 ng-binding']"
 
 """退出系统"""
 get_back_xpath = "xpath->//*[@class='titleColor bar bar-header disable-user-behavior has-tabs-top']/button"
-log_out_xpath = "xpath->//div[@class='label_left sign_out ng-binding']"
+log_out_xpath = "xpath->//*[text()='退出']"
 
 """审批通过 or 驳回"""
 # verify_pass = "xpath->//a[@id='flowGround']"

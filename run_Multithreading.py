@@ -6,7 +6,7 @@ import time
 def add_case():
     '''加载所有的测试用例'''
     test_dir = './testcase'
-    suite = unittest.defaultTestLoader.discover(start_dir=test_dir, pattern='test_*.py')
+    suite = unittest.defaultTestLoader.discover(start_dir=test_dir, pattern='test_zq*.py')
     return suite
 
 now = time.strftime('%Y-%m-%d_%H_%M_%S')

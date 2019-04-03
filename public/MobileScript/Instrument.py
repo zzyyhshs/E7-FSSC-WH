@@ -73,7 +73,8 @@ class MobileSelenium(PySelenium):
             self.how_click(xpath)
         except:
             try:
-                self.get_element("xpath->//div[@class='popup']")  # 解决有弹框还会滚动,导致截图只会截取一半
+                # 解决有弹框还会滚动,导致截图只会截取一半
+                self.get_element("xpath->//div[@class='popup']")
             except:
                 self.browserRoll(xpath)
                 self.how_click(xpath)

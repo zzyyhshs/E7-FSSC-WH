@@ -76,10 +76,10 @@ class MobilePage(Page):
     def getNextOneApprover(self):
         self.infoPrint("获取下一节点审批人")
         try:
+            sleep(1)
             next_one_approver = self.dr.get_element(mobileConfig.next_one_approver_xpath).text
         except:
             next_one_approver = None
-        # sleep(2)
         # if next_one_approver == "待派工":
         #     approver = "测试二号"
         #     # self.add_approver(value=approver)
@@ -108,28 +108,16 @@ class MobilePage(Page):
         :param bill_name: 单据名
         :return:
         """
-        # self.dr.driver.refresh()  # 刷新页面
+        self.dr.driver.refresh()  # 刷新页面
+        sleep(1)
         if traceback.extract_stack()[-2][2] == "handleBillAuto":
-            # title_xpath = "xpath->//*[text()='{}']".format(self.bill_name)
-            mission_xpath = mobileConfig.verify_pass
+            self.click(mobileConfig.verify_pass)
         else:
-            # title_xpath = "xpath->//*[text()='{}']".format(self.bill_name)
-            mission_xpath = mobileConfig.mission_bill_xpath
-        # self.dr.browserRoll(title_xpath)
-        # sleep(1)
-        self.click(mission_xpath)
-        # sleep(3)
+            self.click(mobileConfig.mission_bill_xpath)
         approver = self.getNextOneApprover()
         self.click(mobileConfig.make_sure_xpath)
         # sleep(3)
         self.assertEqual("提交成功", "提交失败", mobileConfig.pop_up_text)
-        # 再次尝试获取同意按钮
-        try:
-            self.click(mobileConfig.make_sure_xpath)
-        except OwnError.AlertError as ret:
-            raise ret
-        except Exception:
-            pass
         return approver
 
     def searchBill(self, bill_num):
@@ -245,7 +233,7 @@ class MobilePage(Page):
                 self.click(xpath)
                 self.dr.browserRoll(xpath)
             self.last_group_xpath = xpath
-        self.dr.browserRoll("xpath->//*[text()='{}']".format(self.bill_name))
+            self.dr.browserRoll("xpath->//h1[text()='{}']".format(self.bill_name))
 
     def setScreenshot(self):
         """截图, 拼接"""
@@ -382,11 +370,15 @@ class MobilePage(Page):
     def intoFillBillPage(self):
         self.infoPrint("进入申请页面")
         self.click(mobileConfig.apply_for_xpath)
-        ele = self.getElement("xpath->//select[@id='orgId']")
-        select = Select(ele)
-        if select.first_selected_option.text != "E7测试":
-            select.select_by_visible_text("E7测试")
-            sleep(0.5)
+        ele = self.getElement("xpath->//div[@class='icon-ZD']")
+        if ele.text != "E7测试":
+            self.click("xpath->//div[@class='icon-ZD']")
+            eles = self.getElements("xpath->//div[@ng-show='showDeptList']/a")
+            for e in eles:
+                if e.text == "E7测试":
+                    e.click()
+                    sleep(0.5)
+                    break
         try:
             self.click("xpath->//div[text()='{}']".format(self.bill_name))
         except Exception:
@@ -423,17 +415,20 @@ class MobilePage(Page):
         while True:
             if not lodaing.is_displayed():
                 break
+            elif unm_time >= wait_time:
+                raise OwnError.AlertError("页面加载时间超过{}秒".format(unm_time))
             else:
                 unm_time += 0.5
                 sleep(0.5)
-            if unm_time >= wait_time:
-                raise OwnError.AlertError("页面加载时间超过{}秒".format(unm_time))
         self.get_popup()
 
     def click(self, css):
         """点击操作"""
-        # 尝试解决有时点击操作会无效的原因
-        web_element = self.getElement(css + "/..")
+        try:
+            # 尝试解决有时点击操作会无效的原因
+            web_element = self.getElement(css + "/..")
+        except:
+            pass
         self.dr.click_Mob(css)
         self.load_page()
 
