@@ -77,7 +77,14 @@ class MobilePage(Page):
         self.infoPrint("获取下一节点审批人")
         try:
             sleep(1)
-            next_one_approver = self.dr.get_element(mobileConfig.next_one_approver_xpath).text
+            next_one_approver_list = self.getElements(mobileConfig.next_one_approver_xpath)
+            for next_approver in next_one_approver_list:
+                if next_approver.text in self.allUserDict:
+                    next_one_approver = next_approver.text
+                    break
+            else:
+                next_one_approver = None
+            # next_one_approver = self.dr.get_element(mobileConfig.next_one_approver_xpath).text
         except:
             next_one_approver = None
         # if next_one_approver == "待派工":

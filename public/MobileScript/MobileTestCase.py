@@ -16,10 +16,10 @@ class test_1(mytest.MyMobileTest):
     def test_0_5(self):
         """测试单据-{2}-{3}-{5}"""
         # 准备测试数据
-        bill_name = "1.2-zq费用报销单（无申请)"
+        bill_name = "1.1-zq日常费用申请单"
         fill_person = "测试一号"
         approval_model = "Auto"
-        test_case_file = "zq费用报销组\\1.2-zq费用报销单（无申请).xls"
+        test_case_file = "zq费用报销组\\1.1-zq日常费用申请单.xls"
         # 初始化测试对象
         fssc_test = MobilePage(self.dr, bill_name)
         test_case_data = BillTestData.instance(test_case_file, 1)

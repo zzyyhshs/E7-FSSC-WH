@@ -78,11 +78,11 @@ searchNameDCL = "xpath->//input[@id='searchNameDCL']"  # 待审批
 searchNameDSP = "xpath->//input[@id='searchNameDSP']"  # 待处理
 searchNameSP = "xpath->//input[@id='searchNameSP']"  # 审批
 searchNameYWC = "xpath->//input[@id='searchNameYWC']"  # 已完成
-find_the_bill = "xpath->//div[@class='cardOne col-90'][1]"  # 查找到的单据
+find_the_bill = "xpath->//div[@class='cardOne']"  # 查找到的单据
 
 """提交单据"""
 mission_bill_xpath = "xpath->//*[text()='提交审批']"
-next_one_approver_xpath = "xpath->//div[@class='person ng-binding']"
+next_one_approver_xpath = "xpath->//div[@class='approvalPerson']/div[1]"
 make_sure_xpath = "xpath->//a[@class='button btn-sure space_4 ng-binding']"
 
 """退出系统"""
